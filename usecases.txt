@@ -1,0 +1,155 @@
+== Introduction ==
+This document attempts to describe the use cases that have to be realized
+by git-ccm through some real-world scenarios.
+
+== Actors involved in the process ==
+- One Synergy DB located at one development site (ie: Ven, Cha)
+  containing LUPIN platform code (sources, binaries, docs, etc.)
+- Software Component
+  Example: one layer including dist/Makefiles 
+- Software Developer
+- Software Integrator
+- Software Tester
+
+== A few remarks ==
+Git is concerned about one single component at a time
+Example: sources of bcm_foo, description of one single layer
+
+Equivalences:
+- svn checkout  ==> git pull
+- svn commit	==> git commit + git push
+
+Repo is a wrapper on top of git
+
+NOTE: all CCM commands have to be executed under
+a supported OS (Ubuntu-8.04 is not officially supported
+by IBM even if tests made so far are OK).
+
+== Scenarios involving git-ccm ==
+- Fabio wants to have a look at the source code of 
+  BTL-Interface from SMEG-3.0.2 baseline stored
+  on Synergy but he is not going to do any changes
+
+   <TODO: Flaviano to complete>
+   $ ccm login fabio@udbt04.venaria.marelli.it
+   $ ccm start -d db xxx
+   $ ccm sync -p projname ...
+
+  Now the sourcecode (including test cases and associated
+  documentation) is available locally inside
+  the WS of Fabio as btlinterface-xx-yy
+
+  The assumption here is that every single component
+  that have to be integrated to WR is associated
+  to a subproject - examples:
+   - bootloader
+   - filesystem
+   - middleware
+   - BTL
+   - ...
+
+- The exact replica of the source files on Synergy
+  that have been previously loaded are sent
+  to WR for integration
+
+   $ cd BTL-Interface
+   $ git init
+   $ git add *
+   $ git commit -m "From Synergy SMEG-3.0.2"
+   $ git remote add origin mm@git.wrs.com:lupin/btl-interface.git
+   $ git push origin master
+
+- Fabio wants to start development of the BTL-Interface
+  for Lupin starting from SMEG-3.0.2 (this is a baseline)
+  so he checks out TB_SW/BTL/BTL-Interface from
+  Synergy DB at Chatellerault.
+
+  Doing so, Fabio creates a new Git project
+  source tree "BTL-Interface" on his machine
+  initialized with the tag "BTL-Interface-3.0.2"
+
+   $ ccm create workarea ...
+   $ cd BTL-Interface
+   $ git init
+   $ git add *
+   $ git commit -m "From Synergy SMEG-3.0.2"
+
+- Fabio2 pushes BTL-Interface-3.0.2 to WR Integration Git
+   $ git remote add origin mm@git.wrs.com:lupin/btl-interface.git
+   $ git push origin master
+
+- WR notifies compilation issues on BTL-Interface,
+  Fabio2 changes BTL-Interface/dummy.h and .c
+    $ vi dummy.h dummy.c
+    $ git add dummy.h dummy.c
+    $ git commit -m "Hopefully fixed compilation issues on WRL3"
+    $ git push
+  Now WR has the patched code, the component is working
+  and will be ready to release.
+
+  Note that Synergy DB is not yet in sync with the
+  modifications sent to WR
+
+- xxx
+
+  All the changes that are pushed to WR should also
+  be made available to Synergy
+
+  So Fabio2 makes sure that the changes that he
+  made BTL-Interface work are properly recorded
+  on master Synergy repository
+
+    $ ccm checkout project TB_SW/BTL/BTL-Interface
+    $ ccm create task fixup_dummy_compile_on_WRL
+    $ ccm checkout dummy.h dummy.c
+    $ git diff x y | patch
+    $ ccm checkin fixup_dummy_compile_on_WRL
+      /* This automatically checks in dummy.c, dummy.h */
+
+- Software Developer (Piero C.) for the first time
+  wants to download release 3.4.5 of the 
+  ogl_test_suite software component
+  (only the sources, not the dependent libraries) 
+  from Synergy to compile them on his own workstation.
+
+  As a consequence, Piero creates a new git
+  source tree on his machine
+  initialized with the tag "3.4.5"
+
+- Software Integrator (Andrea S.) is testing
+  a new dist/Makefile against a software component in Synergy
+  developed by Wipro but does not want to have the .tar.gz
+  checked into the layers
+
+- LUPIN Release team that need to publish the sources
+  of release bcm_foo-1.2.3 on Synergy as requested by someone else
+
+- Tech Leader wants to publish the commit log
+  of a local git tree as a text when uploading the release
+  to Synergy
+
+- MM OpenPlus Application Team wants to checkout
+  LUPIN-1.1B release from Synergy to start their
+  development work (ie some custom C++ code)
+  with the Lupinus Build Environment
+  (TODO: or with additional components?)
+
+- MM OpenPlus Application Team releases the OpenPlus
+  product inside their own Synergy DB (MM_CHA_APP)
+
+- Component foo-1.2.3 was successfully integrated by WR
+  and released as Lupinus C-1 on 01-MAY-2010.
+  Then MM Ven improves the component, calls it foo-1.2.4
+  and submits the changes to WR for continuous integration.
+  After a few changes pushed to WR Git
+  integration repository this is not going
+  to the Release Candidate.
+  WR releases Lupin C-2 with foo-1.2.3
+  Where are the changes stored?
+  After C-2 release MM Ven fixes the bug and pushes
+  the additional changes to WR Git integration repos.
+  WR verifies and releases foo-1.2.4.1 in C-3.
+  MM Synergy DB will not know what happened between
+  foo-1.2.3 and foo-1.2.4.1
+
+# === EOF ===
