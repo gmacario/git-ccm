@@ -26,9 +26,10 @@ a supported OS (Ubuntu-8.04 is not officially supported
 by IBM even if tests made so far are OK).
 
 == Scenarios involving git-ccm ==
-- Fabio wants to have a look at the source code of 
-  BTL-Interface from SMEG-3.0.2 baseline stored
-  on Synergy but he is not going to do any changes
+- The function architect (Fabio) wants to have a look
+  at the source code of BTL-Interface from SMEG-3.0.2
+  baseline stored on Synergy.
+  He is not going to do any changes to the sources right now
 
    <TODO: Flaviano to complete>
    $ ccm login fabio@udbt04.venaria.marelli.it
@@ -59,12 +60,13 @@ by IBM even if tests made so far are OK).
    $ git remote add origin mm@git.wrs.com:lupin/btl-interface.git
    $ git push origin master
 
-- Fabio wants to start development of the BTL-Interface
-  for Lupin starting from SMEG-3.0.2 (this is a baseline)
+- Software Developer (Marco) wants to start development
+  of the BTL-Interface for Lupin starting 
+  from project SMEG-3.0.2 (this is a baseline)
   so he checks out TB_SW/BTL/BTL-Interface from
-  Synergy DB at Chatellerault.
+  Synergy DB at Cha.
 
-  Doing so, Fabio creates a new Git project
+  When doing so, Marco creates a new Git project
   source tree "BTL-Interface" on his machine
   initialized with the tag "BTL-Interface-3.0.2"
 
@@ -74,29 +76,32 @@ by IBM even if tests made so far are OK).
    $ git add *
    $ git commit -m "From Synergy SMEG-3.0.2"
 
-- Fabio2 pushes BTL-Interface-3.0.2 to WR Integration Git
+- Software Developer (Marco) pushes BTL-Interface-3.0.2
+  to WR Integration Git
    $ git remote add origin mm@git.wrs.com:lupin/btl-interface.git
    $ git push origin master
 
 - WR notifies compilation issues on BTL-Interface,
-  Fabio2 changes BTL-Interface/dummy.h and .c
+  Software Developer (Marco) changes BTL-Interface/dummy.h and .c
+  in order to fix the build
     $ vi dummy.h dummy.c
     $ git add dummy.h dummy.c
     $ git commit -m "Hopefully fixed compilation issues on WRL3"
     $ git push
-  Now WR has the patched code, the component is working
-  and will be ready to release.
+  Now WR has the patched code and can verify whether the component
+  builds and tests correctly and may be ready to release.
 
-  Note that Synergy DB is not yet in sync with the
-  modifications sent to WR
+  Note: at this point in time Synergy DB is not yet in sync
+  with the modifications sent to WR
 
-- xxx
+- Synchronize Synergy project with local changes
+  inside the Linux development machine
 
   All the changes that are pushed to WR should also
   be made available to Synergy
 
-  So Fabio2 makes sure that the changes that he
-  made BTL-Interface work are properly recorded
+  Software Developer (Marco) makes sure that the changes that he
+  made to BTL-Interface sources are properly recorded
   on master Synergy repository
 
     $ ccm checkout project TB_SW/BTL/BTL-Interface
@@ -118,38 +123,45 @@ by IBM even if tests made so far are OK).
 
 - Software Integrator (Andrea S.) is testing
   a new dist/Makefile against a software component in Synergy
-  developed by Wipro but does not want to have the .tar.gz
-  checked into the layers
+  developed by a subcontractor company but does not want
+  to have a new .tar.gz checked into the layers every time
+  the subcontractor delivers a new drop
 
-- LUPIN Release team that need to publish the sources
-  of release bcm_foo-1.2.3 on Synergy as requested by someone else
+- LUPIN Release team needs to publish the sources
+  of released bcm_foo-1.2.3 on Synergy to make them available
+  to another team
 
-- Tech Leader wants to publish the commit log
-  of a local git tree as a text when uploading the release
-  to Synergy
+- LUPIN Tech Leader wants to publish the commit log
+  of a local git tree as a text when making a new release
+  of LUPIN available through Synergy
 
-- MM OpenPlus Application Team wants to checkout
+- OpenPlus Application Team wants to checkout
   LUPIN-1.1B release from Synergy to start their
   development work (ie some custom C++ code)
   with the Lupinus Build Environment
-  (TODO: or with additional components?)
+  (TODO: will they also need additional components?)
 
-- MM OpenPlus Application Team releases the OpenPlus
+- OpenPlus Application Team releases the OpenPlus
   product inside their own Synergy DB (MM_CHA_APP)
 
 - Component foo-1.2.3 was successfully integrated by WR
   and released as Lupinus C-1 on 01-MAY-2010.
-  Then MM Ven improves the component, calls it foo-1.2.4
+  Then LUPIN platform team in Ven develops new features
+  to the component, renames it as foo-1.2.4
   and submits the changes to WR for continuous integration.
-  After a few changes pushed to WR Git
-  integration repository this is not going
-  to the Release Candidate.
-  WR releases Lupin C-2 with foo-1.2.3
-  Where are the changes stored?
-  After C-2 release MM Ven fixes the bug and pushes
+  After a few changes pushed to WR Git integration repository
+  there are still a few test cases failing
+  and the integration window time has elapsed,
+  so the Release Candidate will not include it.
+  WR releases Lupin C-2 with foo-1.2.3 instead.
+  Q: Where are the changes stored?
+  After Lupinus C-2 release MM Ven fixes the bug and pushes
   the additional changes to WR Git integration repos.
-  WR verifies and releases foo-1.2.4.1 in C-3.
-  MM Synergy DB will not know what happened between
+  WR verifies and releases foo-1.2.4.1 in Lupinus C-3.
+  ==> MM Synergy DB will not know what happened between
   foo-1.2.3 and foo-1.2.4.1
+
+- TODO: detail scenario when someone (ie the OpenPlus app team)
+  identifies a bug on the foo component that comes inside LUPIN
 
 # === EOF ===
