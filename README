@@ -7,18 +7,23 @@ TODO
 * gmacario's git-ccm at master - GitHub
   http://github.com/gmacario/git-ccm
 
-* Maven SCM - SCM Implementation: CM/Synergy
-  Contains samples of Synergy CLI commands to execute simple actions
-  http://maven.apache.org/scm/synergy.html
-
-* CodeBeamer (Enterprise Version has connectors for Git and Synergy)
-  https://codebeamer.com/cb/user
+* Telelogic Synergy 7.0 InfoCenter
+  http://publib.boulder.ibm.com/infocenter/rsdp/v1r0m0/topic/com.ibm.help.download.synergy.doc/topics/synergy_version70.html
 
 * Comparison between CMSynergy and Git:
   http://versioncontrolblog.com/comparison/CMSynergy/Git/index.html
 
-* Telelogic Synergy 7.0 InfoCenter
-  http://publib.boulder.ibm.com/infocenter/rsdp/v1r0m0/topic/com.ibm.help.download.synergy.doc/topics/synergy_version70.html
+* Maven SCM - SCM Implementation: CM/Synergy
+  Contains samples of Synergy CLI commands to execute simple actions
+  http://maven.apache.org/scm/synergy.html
 
+* Apache Ant User Manual - Optional Tasks: Continuus/Synergy Support
+  These ant tasks are wrappers around Continuus Source Manager.
+  They have been tested against versions 5.1/6.2 on Windows 2000,
+  but should work on other platforms with ccm installed.
+  http://ant.apache.org/manual/OptionalTasks/ccm.html
+
+* CodeBeamer (Enterprise Version has connectors for Git and Synergy)
+  https://codebeamer.com/cb/user
 
 === EOF ===
