@@ -9,9 +9,6 @@
 #	Unix Shell Script
 #
 # Tested on Cygwin under Windows XP Professional SP3
-#
-# See also:
-#	http://publib.boulder.ibm.com/infocenter/rsdp/v1r0m0/topic/com.ibm.help.download.synergy.doc/pdf70/help_cli.pdf
 # ============================================================================
 
 . syn_common.sh || exit 1
