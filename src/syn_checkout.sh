@@ -34,24 +34,34 @@ if [ "${CCM_USER}" == "" ]; then
 	read CCM_USER
 fi
 if [ "${CCM_PASS}" == "" ]; then 
-    echo -n "Enter CCM_PASS: "
+    echo -n "Enter CCM_PASS for user \"${CCM_USER}\": "
 	stty -echo
 	read CCM_PASS
 	stty echo
+	echo ""
 fi
 
 # Make sure that CCM_HOME/bin is in PATH
 which ccm 2>/dev/null || PATH=${PATH}:${CCM_HOME}/bin
 #echo DBG: PATH=${PATH}
 
+# Variables as per http://maven.apache.org/scm/synergy.html
+database_delimiter=-
+#database_delimiter=~
+#
+project_name=Apache_Ant
+project_version=Release_1.7.0_20080701
+#release=
+#purpose=
+
 set -x
 
-# Login on server unfs06 with macario user name.
+# Login on server $engine_hostname with username $CCM_USER and password $CCM_PASS.
 # Note that the password is in plain text
 ccm start -q -n ${CCM_USER} -pw ${CCM_PASS} -rc -h ${engine_hostname} -p ${project_spec} -nogui
 
-# Checkout project "LupinTestDash" from version 2 to 3
-# (Mario) ccm co -p LupinTestDash-2 -path "$(pwd)" -versions 2:3
+# (Mario) Checkout project "LupinTestDash" from version 2 to 3
+# ccm co -p LupinTestDash-2 -path "$(pwd)" -versions 2:3
 
 # ==> GUI will save work area under
 #     D:\Documents and Settings\macario\ccm_wa\TRAINING70\LupinTestDash-macario1\LupinTestDash
@@ -61,6 +71,15 @@ ccm start -q -n ${CCM_USER} -pw ${CCM_PASS} -rc -h ${engine_hostname} -p ${proje
 #                                              \___ database name = TRAINING70
 #
 # ??? ccm checkout -project LupinTestDash-2 -versions 2:3
+ccm checkout -project ${project_name}${database_delimiter}${project_version}
+
+#+ ccm checkout -project LinuxProj
+#Project reference requires name and version optionally followed by instance: 'LinuxProj'
+#Failed to set Work Area Properties
+#Copy Project failed: Invalid project.
+#Derive failed for project ''
+#Copy Project complete.
+
 
 # Copy to file system (GUI: Object > Create work area snapshot)
 #
