@@ -20,8 +20,8 @@
 # Username that will connect to Synergy server
 CCM_USER=macario
 #CCM_PASS=xxxxx
-CCM_HOST=unfs06.venaria.marelli.it
-CCM_DBPATH=/projects/TRAINING70
+engine_hostname=unfs06.venaria.marelli.it
+project_spec=/projects/TRAINING70
 
 # Telelogic Synergy Client v7.0 Installation directory
 CCM_HOME=/cygdrive/c/Programmi/Telelogic/Telelogic\ Synergy\ 7.0
@@ -35,7 +35,9 @@ if [ "${CCM_USER}" == "" ]; then
 fi
 if [ "${CCM_PASS}" == "" ]; then 
     echo -n "Enter CCM_PASS: "
+	stty -echo
 	read CCM_PASS
+	stty echo
 fi
 
 # Make sure that CCM_HOME/bin is in PATH
@@ -46,10 +48,24 @@ set -x
 
 # Login on server unfs06 with macario user name.
 # Note that the password is in plain text
-ccm start -q -n ${CCM_USER} -pw ${CCM_PASS} -rc -h ${CCM_HOST} -p ${CCM_DBPATH} -nogui
+ccm start -q -n ${CCM_USER} -pw ${CCM_PASS} -rc -h ${engine_hostname} -p ${project_spec} -nogui
 
 # Checkout project "LupinTestDash" from version 2 to 3
-ccm co -p LupinTestDash-2 -path "$(pwd)" -versions 2:3
+# (Mario) ccm co -p LupinTestDash-2 -path "$(pwd)" -versions 2:3
+
+# ==> GUI will save work area under
+#     D:\Documents and Settings\macario\ccm_wa\TRAINING70\LupinTestDash-macario1\LupinTestDash
+#                                                        ^
+#                                                        \___ work area path = D:\...\TRAINING70
+#                                              ^
+#                                              \___ database name = TRAINING70
+#
+# ??? ccm checkout -project LupinTestDash-2 -versions 2:3
+
+# Copy to file system (GUI: Object > Create work area snapshot)
+#
+# Note: can make wa_snapshots only of projects that are static (ie in state "integrate" or "release"?)
+# ccm copy_to_file_system project_spec [project_spec] [-p|-path path] [-r|-recurse]
 
 ccm stop
 
