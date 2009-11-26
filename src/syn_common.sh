@@ -22,6 +22,7 @@
 #CCM_PASS=xxxxx
 
 #engine_hostname=unfs06.venaria.marelli.it
+#router_hostname=${engine_hostname}
 #project_spec=/projects/TRAINING70
 
 # Variables as per http://maven.apache.org/scm/synergy.html
@@ -56,5 +57,18 @@ fi
 # Make sure that CCM_HOME/bin is in PATH
 which ccm 2>/dev/null || PATH=${PATH}:${CCM_HOME}/bin
 #echo DBG: PATH=${PATH}
+
+# Make sure that CCM router is same as router_hostname
+router_hostname=${engine_hostname}
+#echo "DBG: Printing _router.adr"
+#cat "${CCM_HOME}/etc/_router.adr"
+#echo "DBG: END"
+grep ${engine_hostname} "${CCM_HOME}/etc/_router.adr" 2>/dev/null
+router_ok=$?
+if [ ! ${router_ok} ]; then
+	echo "Please provide link to ${router_hostname}"
+	echo "into ${CCM_HOME}/etc/_router.adr"
+	exit 1
+fi
 
 # === EOF ===
