@@ -11,30 +11,36 @@
 # ============================================================================
 
 # ----------------------------------------------------------------------------
-# Configurable Parameters
-# TODO: Should fetch them from environment or config file
+# Default Parameters
+# They should be defined in the caller program
 
 # Telelogic Synergy Client v7.0 Installation directory
-CCM_HOME=/cygdrive/c/Programmi/Telelogic/Telelogic\ Synergy\ 7.0
+#CCM_HOME=/cygdrive/c/Programmi/Telelogic/Telelogic\ Synergy\ 7.0
 
 # Username that will connect to Synergy server
-CCM_USER=macario
+#CCM_USER=macario
 #CCM_PASS=xxxxx
-engine_hostname=unfs06.venaria.marelli.it
-project_spec=/projects/TRAINING70
+
+#engine_hostname=unfs06.venaria.marelli.it
+#project_spec=/projects/TRAINING70
 
 # Variables as per http://maven.apache.org/scm/synergy.html
-database_delimiter=-
+#database_delimiter=-
 #database_delimiter=~
 #
-project_name=Apache_Ant
-project_version=Release_1.7.0_20080701
+#project_name=Apache_Ant
+#project_version=Release_1.7.0_20080701
 #release=
 #purpose=
 
 # ----------------------------------------------------------------------------
 # Sanity Checks
 
+# Verify that all the environment variables have been properly defined
+if [ "${CCM_HOME}" == "" ]; then 
+    echo "ERROR: CCM_HOME must be defined"
+	exit 1
+fi
 if [ "${CCM_USER}" == "" ]; then 
     echo -n "Enter CCM_USER: "
 	read CCM_USER
