@@ -47,7 +47,7 @@ if [ "${CCM_USER}" == "" ]; then
 	read CCM_USER
 fi
 if [ "${CCM_PASS}" == "" ]; then 
-    echo -n "Enter CCM_PASS for user \"${CCM_USER}\": "
+    echo -n "Enter CCM_PASS for user ${CCM_USER} on ${engine_hostname}: "
 	stty -echo
 	read CCM_PASS
 	stty echo
@@ -60,12 +60,15 @@ which ccm 2>/dev/null || PATH=${PATH}:${CCM_HOME}/bin
 
 # Make sure that CCM router is same as router_hostname
 router_hostname=${engine_hostname}
-#echo "DBG: Printing _router.adr"
-#cat "${CCM_HOME}/etc/_router.adr"
-#echo "DBG: END"
-grep ${engine_hostname} "${CCM_HOME}/etc/_router.adr" 2>/dev/null
-router_ok=$?
-if [ ! ${router_ok} ]; then
+
+echo "DBG: Printing _router.adr"
+cat "${CCM_HOME}/etc/_router.adr"
+echo "DBG: END"
+echo "DBG: router_hostname=${router_hostname}"
+
+router_ok=$(grep "^${router_hostname}" "${CCM_HOME}/etc/_router.adr" | wc -l)
+echo "DBG: router_ok=${router_ok}"
+if [ ${router_ok} != 1 ]; then
 	echo "Please provide link to ${router_hostname}"
 	echo "into ${CCM_HOME}/etc/_router.adr"
 	exit 1
