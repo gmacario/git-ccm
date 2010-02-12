@@ -1,0 +1,8 @@
+= TODO =
+* Decide which is the master Git repository for this project
+  http://gitorious.org/git-ccm-test or http://github.com/gmacario/git-ccm
+* Decide whether to contribute to http://gitorious.org/git-ccm
+  or keep http://gitorious.org/~gmacario/jjohnny-git-ccm-clone
+* Use [http://gitorious.org/git-python GitPython]
+
+# === EOF ===
